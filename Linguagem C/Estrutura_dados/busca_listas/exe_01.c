@@ -1,3 +1,8 @@
+/*
+ *Faça um algoritmo que verifique se uma lista encadeada
+ *que contém números inteiros está em ordem crescente.
+ */
+
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -35,6 +40,7 @@ void desalocarMemoria(lista *no)
     return;
   desalocarMemoria(no->proximo);
   free(no);
+  no = NULL;
 }
 
 lista *criaNo(lista *no, int numero)
@@ -59,33 +65,49 @@ lista *criaNo(lista *no, int numero)
   return no;
 }
 
-lista *crescente(lista *no)
-{
-  lista *aux, *ordenada = NULL;
-
-  if (no == NULL || no->proximo == NULL)
-    return no;
-
-  aux = no->proximo;
-  while (aux != NULL)
-    {
-      if (aux->proximo != NULL && no->valor >= aux->valor)
-        {
-          ordenada = no;
-        }
-      no = aux;
-      aux = aux->proximo;
-    }
-  return ordenada;
-}
-
-void printarLista(lista *no)
+bool crescente(lista *no)
 {
   if (no == NULL)
-    return;
+    {
+      printf("lista vázia\n");
+      return false;
+    }
 
-  printf("%d\n", no->valor);
-  printarLista(no->proximo);
+  lista *aux = no;
+
+  while (aux->proximo != NULL)
+    {
+      if (aux->valor > aux->proximo->valor)
+        {
+          return false;
+        }
+      aux = aux->proximo;
+    }
+
+  return true;
+}
+
+void printarLista(lista *inicio)
+{
+  if (inicio == NULL)
+    {
+      printf("Lista vázia!\n");
+      return;
+    }
+  printf("\n[");
+
+  lista *atual = inicio;
+
+  while (atual != NULL)
+    {
+      printf("%d", atual->valor);
+      if (atual->proximo != NULL)
+        {
+          printf(",");
+        }
+      atual = atual->proximo;
+    }
+  printf("]\n");
 }
 
 int lerInt()
@@ -100,13 +122,15 @@ int lerInt()
 int main(void)
 {
   int opcao;
-  lista *lista = NULL, *listaCrescente = NULL;
+  lista *lista = NULL;
   do
     {
+      printf("\n");
       printf("1 - Adicionar números\n");
-      printf("2 - Ordenar de maneira crescente\n");
+      printf("2 - Verifica se está ordenada de maneira crescente\n");
       printf("3 - Mostrar lista\n");
-      printf("0 - Sair\n");
+      printf("4 - Destruir lista\n");
+      printf("0 - Sair\n>> ");
       scanf("%d", &opcao);
 
       switch (opcao)
@@ -119,7 +143,14 @@ int main(void)
           }
         case 2:
           {
-            listaCrescente = crescente(lista);
+            if (crescente(lista))
+              {
+                printf("Está crescente\n");
+              }
+            else
+              {
+                printf("Não está crescente\n");
+              }
             break;
           }
         case 3:
@@ -127,11 +158,14 @@ int main(void)
             printarLista(lista);
             break;
           }
+        case 4:
+          desalocarMemoria(lista);
+          printf("Lista destruída!\n");
+          lista = NULL;
         }
     }
   while (opcao != 0);
 
   desalocarMemoria(lista);
-  desalocarMemoria(listaCrescente);
   return EXIT_SUCCESS;
 }
