@@ -1,6 +1,6 @@
 # exercicios:
 
-## atividades que fiz, ou estou fazendo para desenvolvimento em programação até o momento:
+## atividades que fiz, ou estou fazendo até o momento:
 
 # Linguagens:
 
