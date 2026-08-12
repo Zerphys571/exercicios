@@ -9,6 +9,7 @@
   * **Sem tabs** --> no momento de desenvolver o seu algoritmo, não utilize tabulações(tab) apenas espaços;
   * **Makefile** --> utilize o makefile para compilação do código, principalmente com a flag -Wall;
   * **Bibliotecas** --> não utilizar nada além da biblioteca padrão <stdio.h>;
+  * **Typedef** --> não utilizar nenhum tipo de struct com typedef;
   * **indentação** --> de preferência utilize o padrão de indentação whitesmith exemplo dela abaixo;
 ```c
 int calcularSoma(int a, int b)
