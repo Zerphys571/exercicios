@@ -1,0 +1,14 @@
+### 🛒 Desafio 1: O Gerenciador de Estoque (Foco em ArrayList e Cálculos)
+Vamos criar um sistema para uma lojinha.
+* A Classe `Produto`: Deve ter `nome` (String), `preco` (double) e `quantidade` (int), todos `private`. Crie métodos getters, um construtor, e um método `calcularValorTotal()` que retorna o preço multiplicado pela quantidade.
+* O `main`: Use o `Scanner` para perguntar ao usuário quantos produtos ele quer cadastrar. Faça um loop para ler os dados de cada produto, instanciá-los e guardá-los em um `ArrayList<Produto>`. No final, percorra a lista e imprima o nome e o valor total em estoque de cada item.
+
+### 🌡️ Desafio 2: Estação Meteorológica (Foco em Arrays Fixos dentro de Objetos)
+Vamos analisar as temperaturas de uma semana.
+* A Classe `Estacao`: Deve ter o `nomeDaCidade` (String) e um array fixo `temperaturas` de 7 posições (`double[]`). Crie um método `inserirTemperatura(int dia, double temp)` e outros dois métodos para processar os dados: `calcularMedia()` e `buscarMaiorTemperatura()`.
+* O `main`: Peça ao usuário o nome da cidade e instancie a `Estacao`. Em seguida, faça um loop de 0 a 6 pedindo para o usuário digitar a temperatura de cada dia e use o método `inserirTemperatura` para guardar o valor no objeto. Por fim, chame os métodos de cálculo e exiba os resultados.
+
+### ⚔️ Desafio 3: Mini Arena (Foco em Interação entre Objetos)
+Vamos fazer dois objetos interagirem entre si.
+* A Classe `Personagem`: Deve ter `nome` (String), `pontosDeVida` (int) e `forcaDeAtaque` (int). Crie um método `receberDano(int dano)` que subtrai a vida, e um método `atacar(Personagem alvo)`. O método atacar deve chamar o `receberDano` do alvo passando a força do atacante.
+* O `main`: Use o `Scanner` para criar dois personagens com dados digitados pelo usuário (ex: Guerreiro e Mago). Faça o personagem 1 atacar o personagem 2. Imprima os pontos de vida do personagem 2 antes e depois do ataque para provar que a interação funcionou.
