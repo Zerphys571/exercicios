@@ -53,11 +53,72 @@ unique_ptr<AvlTree> AvlTree::rotacaoEsq(unique_ptr<AvlTree> x)
   unique_ptr<AvlTree> y  = move(x->dir);
   unique_ptr<AvlTree> T2 = move(y->esq);
   
-  y->esq = move(x);
-  AtualizarAltura(y);
-
   x->dir = move(T2);
-  x->AtualizarAltura(x);
+  x->atualizarAltura(x);
+
+  y->esq = move(x);
+  y->atualizarAltura(y);
 
   return move(y);
 }
+
+unique_ptr<AvlTree> AvlTree::removerNo(unique_ptr<AvlTree> no, int chave)
+{
+  if(no == nullptr) return NULL;
+
+  if(chave < no->chave)      no->esq      = no->removerNo(move(no->esq), chave);
+  else if(chave > no->chave) no->dir      = no->removerNo(move(no->dir), chave);
+  else
+  {
+    if(no->dir == nullptr || no->esq == nullptr)
+    {
+      unique_ptr<AvlTree> filho = no->esq ? move(no->esq) : move(no->dir);
+      return move(filho);
+    }
+    unique_ptr<AvlTree> suc = min(no->dir);
+    no->chave = suc->chave;
+    no->dir   = no->removerNo(move(no->dir), suc->chave);
+
+    this->atualizarAltura(no);
+  }
+
+  this->atualizarAltura(no);
+
+  int fb = this->FatorBalanceamento(no);
+
+  if(fb > 1 && this->FatorBalanceamento(no->esq) >= 0) // ll
+    return this->rotacaoDir(move(no));
+  if(fb > 1 && this->FatorBalanceamento(no->esq) < 0) // LR
+  {
+    no->esq = this->rotacaoEsq(move(no->esq));
+    return this->rotacaoDir(move(no));
+  }
+  if(fb < -1 && this->FatorBalanceamento(no->dir) <= 0)
+    return this->rotacaoEsq(move(no));
+  if(fb < -1 && this->FatorBalanceamento(no->dir) > 0)
+  {
+    no->dir = this->rotacaoDir(move(no->dir));
+    return this->rotacaoEsq(move(no));
+  }
+
+  return move(no);
+}
+
+int AvlTree::AlturaReal(const unique_ptr<AvlTree>& no)
+{
+  if(no == nullptr) return -1;
+  return 1 + maior(this->AlturaReal(no->esq), this->AlturaReal(no->dir));
+}
+
+int AvlTree::ehAvl(const unique_ptr<AvlTree>& no)
+{
+  if(no == nullptr) return 1;
+
+  if(no->altura != this->AlturaReal(no)) return 0;
+
+  if(abs(this->FatorBalanceamento(no)) > 1) return 0;
+
+  return this->ehAvl(no->esq) && this->ehAvl(no->dir);
+}
+
+void AvlTree::inserir(unique_ptr<AvlTree> no){}
