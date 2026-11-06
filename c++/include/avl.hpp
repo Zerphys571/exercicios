@@ -17,8 +17,8 @@ class AvlTree
     int getChave()  const;
     int getAltura() const;
 
-    int Altura(std::unique_ptr<AvlTree> no);
-    void AtualizarAltura(std::unique_ptr<AvlTree> no);
+    friend int Altura(const std::unique_ptr<AvlTree>& no);
+    void AtualizarAltura(const std::unique_ptr<AvlTree>& no);
     int FatorBalanceamento(std::unique_ptr<AvlTree> no);
     void inserir(std::unique_ptr<AvlTree> no);
 
@@ -28,6 +28,7 @@ class AvlTree
 
     void removerNo(std::unique_ptr<AvlTree> no, int chave);
 
+    friend int maior(int a, int b);
     int AlturaReal(std::unique_ptr<AvlTree> no);
     int ehAvl(std::unique_ptr<AvlTree> no);
 };
