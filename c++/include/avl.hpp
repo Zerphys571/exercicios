@@ -26,11 +26,11 @@ class AvlTree
     std::unique_ptr<AvlTree> rotacaoDir(std::unique_ptr<AvlTree> no);
     std::unique_ptr<AvlTree> rotacaoEsq(std::unique_ptr<AvlTree> no);
 
-    void removerNo(std::unique_ptr<AvlTree> no, int chave);
+    std::unique_ptr<AvlTree> removerNo(std::unique_ptr<AvlTree> no, int chave);
 
     friend int maior(int a, int b);
-    int AlturaReal(std::unique_ptr<AvlTree> no);
-    int ehAvl(std::unique_ptr<AvlTree> no);
+    int AlturaReal(const std::unique_ptr<AvlTree>& no);
+    int ehAvl(const std::unique_ptr<AvlTree>& no);
 };
 
 
