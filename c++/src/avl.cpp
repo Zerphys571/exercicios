@@ -1,5 +1,6 @@
 #include "avl.hpp"
 #include <utility>
+#include <cstdlib>
 using namespace std;
 
 
@@ -28,7 +29,7 @@ void AvlTree::AtualizarAltura(const std::unique_ptr<AvlTree>& no)
   no->altura = 1 + maior(Altura(no->esq), Altura(no->dir));
 }
 
-int AvlTree::FatorBalanceamento(unique_ptr<AvlTree> no) 
+int AvlTree::FatorBalanceamento(const unique_ptr<AvlTree>& no) 
 { 
   if(no == nullptr) return 0;  
   return Altura(no->esq) - Altura(no->dir);
@@ -54,13 +55,23 @@ unique_ptr<AvlTree> AvlTree::rotacaoEsq(unique_ptr<AvlTree> x)
   unique_ptr<AvlTree> T2 = move(y->esq);
   
   x->dir = move(T2);
-  x->atualizarAltura(x);
+  x->AtualizarAltura(x);
 
   y->esq = move(x);
-  y->atualizarAltura(y);
+  y->AtualizarAltura(y);
 
   return move(y);
 }
+
+const unique_ptr<AvlTree>& AvlTree::encontrarMin(const unique_ptr<AvlTree>& no)
+{
+  if(no == nullptr) return no;
+
+  if(no->esq == nullptr) return no;
+
+  return this->encontrarMin(no->esq);
+}
+
 
 unique_ptr<AvlTree> AvlTree::removerNo(unique_ptr<AvlTree> no, int chave)
 {
@@ -75,14 +86,14 @@ unique_ptr<AvlTree> AvlTree::removerNo(unique_ptr<AvlTree> no, int chave)
       unique_ptr<AvlTree> filho = no->esq ? move(no->esq) : move(no->dir);
       return move(filho);
     }
-    unique_ptr<AvlTree> suc = min(no->dir);
+    const unique_ptr<AvlTree>& suc = this->encontrarMin(no->dir);
     no->chave = suc->chave;
     no->dir   = no->removerNo(move(no->dir), suc->chave);
 
-    this->atualizarAltura(no);
+    this->AtualizarAltura(no);
   }
 
-  this->atualizarAltura(no);
+  this->AtualizarAltura(no);
 
   int fb = this->FatorBalanceamento(no);
 
@@ -121,4 +132,7 @@ int AvlTree::ehAvl(const unique_ptr<AvlTree>& no)
   return this->ehAvl(no->esq) && this->ehAvl(no->dir);
 }
 
-void AvlTree::inserir(unique_ptr<AvlTree> no){}
+void AvlTree::inserir(unique_ptr<AvlTree> no)
+{
+  
+}
