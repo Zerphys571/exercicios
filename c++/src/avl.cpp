@@ -132,7 +132,23 @@ int AvlTree::ehAvl(const unique_ptr<AvlTree>& no)
   return this->ehAvl(no->esq) && this->ehAvl(no->dir);
 }
 
-void AvlTree::inserir(unique_ptr<AvlTree> no)
+int AvlTree::inserir(int chave)
 {
-  
+  if(chave == this->chave) return EXIT_FAILURE;
+
+  if(chave < this->chave) 
+  {
+    if(this->esq == nullptr)
+      unique_ptr<AvlTree> noNovo = make_unique<AvlTree>(chave);
+    else
+      this->esq->inserir(chave);
+  }
+  if(chave > this->chave)
+  {
+    if(this->dir == nullptr)
+      unique_ptr<AvlTree> noNovo = make_unique<AvlTree>(chave);
+    else
+      this->dir->inserir(chave);
+  }
+  return EXIT_SUCCESS;
 }
