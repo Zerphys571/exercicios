@@ -20,7 +20,7 @@ class AvlTree
     friend int Altura(const std::unique_ptr<AvlTree>& no);
     void AtualizarAltura(const std::unique_ptr<AvlTree>& no);
     int FatorBalanceamento(const std::unique_ptr<AvlTree>& no);
-    void inserir(std::unique_ptr<AvlTree> no);
+    int inserir(int chave);
 
 
     std::unique_ptr<AvlTree> rotacaoDir(std::unique_ptr<AvlTree> no);
