@@ -101,6 +101,15 @@ unique_ptr<AvlTree> AvlTree::removerNo(unique_ptr<AvlTree> no, int chave)
   return move(no);
 }
 
+const unique_ptr<AvlTree>& AvlTree::buscarElemento(const unique_ptr<AvlTree>& raiz, int valor)
+{
+  if(raiz == nullptr || raiz->chave == valor) return raiz;
+
+  if(valor < raiz->chave) return buscarElemento(raiz->esq, valor);
+
+  return buscarElemento(raiz->dir, valor);
+}
+
 int AvlTree::AlturaReal(const unique_ptr<AvlTree>& no)
 {
   if(no == nullptr) return -1;
@@ -156,6 +165,22 @@ unique_ptr<AvlTree> AvlTree::inserir(unique_ptr<AvlTree> no,int chave)
   this->AtualizarAltura(no);
   no = this->rebalancear(move(no));  
   return move(no);
+}
+
+void AvlTree::printarArvore(const unique_ptr<AvlTree>& raiz, int nivel)
+{
+  if(raiz == nullptr) return;
+
+  printarArvore(raiz->dir, nivel + 1);
+
+  for(int i = 0; i < nivel; ++i)
+  {
+    cout << "    ";
+  }
+
+  cout << raiz->chave << endl;
+
+  printarArvore(raiz->esq, nivel + 1);
 }
 
 int receberEntrada(const string& mensagem)
