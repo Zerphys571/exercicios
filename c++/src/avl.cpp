@@ -1,5 +1,7 @@
 #include "avl.hpp"
 #include <utility>
+#include <iostream>
+#include <string>
 #include <cstdlib>
 using namespace std;
 
@@ -9,6 +11,7 @@ using namespace std;
 // ==============================================================================
 
 // Construtor
+AvlTree::AvlTree(){}
 AvlTree::AvlTree(int chave) : chave(chave), altura(0), dir(nullptr), esq(nullptr) {}
 // Getters
 int AvlTree::getChave()   const { return chave;  }
@@ -75,7 +78,7 @@ const unique_ptr<AvlTree>& AvlTree::encontrarMin(const unique_ptr<AvlTree>& no)
 
 unique_ptr<AvlTree> AvlTree::removerNo(unique_ptr<AvlTree> no, int chave)
 {
-  if(no == nullptr) return NULL;
+  if(no == nullptr) return nullptr;
 
   if(chave < no->chave)      no->esq      = no->removerNo(move(no->esq), chave);
   else if(chave > no->chave) no->dir      = no->removerNo(move(no->dir), chave);
@@ -88,29 +91,12 @@ unique_ptr<AvlTree> AvlTree::removerNo(unique_ptr<AvlTree> no, int chave)
     }
     const unique_ptr<AvlTree>& suc = this->encontrarMin(no->dir);
     no->chave = suc->chave;
-    no->dir   = no->removerNo(move(no->dir), suc->chave);
-
-    this->AtualizarAltura(no);
+    no->dir   = no->removerNo(move(no->dir), no->chave);
   }
 
   this->AtualizarAltura(no);
 
-  int fb = this->FatorBalanceamento(no);
-
-  if(fb > 1 && this->FatorBalanceamento(no->esq) >= 0) // ll
-    return this->rotacaoDir(move(no));
-  if(fb > 1 && this->FatorBalanceamento(no->esq) < 0) // LR
-  {
-    no->esq = this->rotacaoEsq(move(no->esq));
-    return this->rotacaoDir(move(no));
-  }
-  if(fb < -1 && this->FatorBalanceamento(no->dir) <= 0)
-    return this->rotacaoEsq(move(no));
-  if(fb < -1 && this->FatorBalanceamento(no->dir) > 0)
-  {
-    no->dir = this->rotacaoDir(move(no->dir));
-    return this->rotacaoEsq(move(no));
-  }
+  no = this->rebalancear(move(no));
 
   return move(no);
 }
@@ -132,23 +118,52 @@ int AvlTree::ehAvl(const unique_ptr<AvlTree>& no)
   return this->ehAvl(no->esq) && this->ehAvl(no->dir);
 }
 
-int AvlTree::inserir(int chave)
+unique_ptr<AvlTree> AvlTree::rebalancear(unique_ptr<AvlTree>no)
 {
-  if(chave == this->chave) return EXIT_FAILURE;
+  if(no == nullptr) return no;
+  
+  int fb = this->FatorBalanceamento(no);
 
-  if(chave < this->chave) 
+  if(fb > 1 && this->FatorBalanceamento(no->esq) >= 0) // ll
+    return this->rotacaoDir(move(no));
+
+  if(fb > 1 && this->FatorBalanceamento(no->esq) < 0) // LR
   {
-    if(this->esq == nullptr)
-      unique_ptr<AvlTree> noNovo = make_unique<AvlTree>(chave);
-    else
-      this->esq->inserir(chave);
+    no->esq = this->rotacaoEsq(move(no->esq));
+    return this->rotacaoDir(move(no));
   }
-  if(chave > this->chave)
+
+  if(fb < -1 && this->FatorBalanceamento(no->dir) <= 0)
+    return this->rotacaoEsq(move(no));
+
+  if(fb < -1 && this->FatorBalanceamento(no->dir) > 0)
   {
-    if(this->dir == nullptr)
-      unique_ptr<AvlTree> noNovo = make_unique<AvlTree>(chave);
-    else
-      this->dir->inserir(chave);
+    no->dir = this->rotacaoDir(move(no->dir));
+    return this->rotacaoEsq(move(no));
   }
-  return EXIT_SUCCESS;
+  return move(no);
+}
+
+unique_ptr<AvlTree> AvlTree::inserir(unique_ptr<AvlTree> no,int chave)
+{
+  if(no == nullptr) return make_unique<AvlTree>(chave);
+
+  if(chave < no->chave) 
+    no->esq = this->inserir(move(no->esq), chave);
+  if(chave > no->chave)
+    no->dir = this->inserir(move(no->dir), chave);
+
+  this->AtualizarAltura(no);
+  no = this->rebalancear(move(no));  
+  return move(no);
+}
+
+int receberEntrada(const string& mensagem)
+{
+  string entrada;
+  cout << mensagem << ">> ";
+
+  getline(cin, entrada);
+
+  return stoi(entrada);
 }
