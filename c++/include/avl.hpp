@@ -13,6 +13,7 @@ class AvlTree
 
   public:
     AvlTree(int chave);
+    AvlTree();
 
     int getChave()  const;
     int getAltura() const;
@@ -20,8 +21,7 @@ class AvlTree
     friend int Altura(const std::unique_ptr<AvlTree>& no);
     void AtualizarAltura(const std::unique_ptr<AvlTree>& no);
     int FatorBalanceamento(const std::unique_ptr<AvlTree>& no);
-    int inserir(int chave);
-
+    std::unique_ptr<AvlTree> inserir(std::unique_ptr<AvlTree> no, int chave);
 
     std::unique_ptr<AvlTree> rotacaoDir(std::unique_ptr<AvlTree> no);
     std::unique_ptr<AvlTree> rotacaoEsq(std::unique_ptr<AvlTree> no);
@@ -32,7 +32,10 @@ class AvlTree
     const std::unique_ptr<AvlTree>& encontrarMin(const std::unique_ptr<AvlTree>& no);
     int AlturaReal(const std::unique_ptr<AvlTree>& no);
     int ehAvl(const std::unique_ptr<AvlTree>& no);
+    std::unique_ptr<AvlTree>rebalancear(std::unique_ptr<AvlTree>no);
 };
+
+int receberEntrada(const std::string& mensagem);
 
 
 #endif 
