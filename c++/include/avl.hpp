@@ -27,12 +27,14 @@ class AvlTree
     std::unique_ptr<AvlTree> rotacaoEsq(std::unique_ptr<AvlTree> no);
 
     std::unique_ptr<AvlTree> removerNo(std::unique_ptr<AvlTree> no, int chave);
+    const std::unique_ptr<AvlTree>& buscarElemento(const std::unique_ptr<AvlTree>& raiz, int valor) const;
 
     friend int maior(int a, int b);
     const std::unique_ptr<AvlTree>& encontrarMin(const std::unique_ptr<AvlTree>& no);
     int AlturaReal(const std::unique_ptr<AvlTree>& no);
     int ehAvl(const std::unique_ptr<AvlTree>& no);
     std::unique_ptr<AvlTree>rebalancear(std::unique_ptr<AvlTree>no);
+    void printarArvore(const std::unique_ptr<AvlTree>& raiz, int nivel = 0);
 };
 
 int receberEntrada(const std::string& mensagem);
