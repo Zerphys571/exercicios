@@ -101,7 +101,7 @@ unique_ptr<AvlTree> AvlTree::removerNo(unique_ptr<AvlTree> no, int chave)
   return move(no);
 }
 
-const unique_ptr<AvlTree>& AvlTree::buscarElemento(const unique_ptr<AvlTree>& raiz, int valor)
+const unique_ptr<AvlTree>& AvlTree::buscarElemento(const unique_ptr<AvlTree>& raiz, int valor) const
 {
   if(raiz == nullptr || raiz->chave == valor) return raiz;
 
@@ -185,10 +185,18 @@ void AvlTree::printarArvore(const unique_ptr<AvlTree>& raiz, int nivel)
 
 int receberEntrada(const string& mensagem)
 {
+  cin.ignore();
   string entrada;
   cout << mensagem << ">> ";
 
   getline(cin, entrada);
 
   return stoi(entrada);
+}
+
+bool verificarNull(const unique_ptr<AvlTree>& no)
+{
+  if(no == nullptr) return true;
+
+  return false;
 }
