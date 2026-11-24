@@ -1,5 +1,6 @@
 #include "avl.hpp"
 #include <iostream>
+using namespace std;
 
 int main(void)
 {
@@ -14,7 +15,7 @@ int main(void)
     cout << "0 - Sair" << endl << ">> ";
     cin >> opcao;
     if (opcao == '0') break;
-
+    cout << endl;
     switch (opcao)
     {
     case '1':
@@ -28,10 +29,53 @@ int main(void)
     }
     case '2':
     {
+      if(verificarNull(arvore)) 
+      {
+        cout << "Árvore vázia não é possível realizar operação..." << endl;
+        break;
+      }
       int num = receberEntrada("Digite o número para buscar");
+      const auto& result = arvore->buscarElemento(arvore, num);
+
+      if(verificarNull(result))
+      {
+        cout << "Resultado não encontrado... " << num << endl;
+        break;
+      }
+      cout << "Resultado encontrado... " << result->getChave() << endl;
+      break;
+    }
+    case '3':
+    {
+      if(verificarNull(arvore))
+      {
+        cout << "Árvore vázia não é possível realizar operação..." << endl;
+        break;
+      }
+      int num = receberEntrada("Digite o número a ser deletado");
+      if(arvore->buscarElemento(arvore,num) != nullptr)
+      {
+        arvore = arvore->removerNo(move(arvore), num);
+        cout << "Número deletado... " << num << endl;
+        break;
+      }
+
+      cout << "Elemento não foi encontrado na Árvore..." << endl;
+      break;
+    }
+    case '4':
+    {
+      if(verificarNull(arvore))
+      {
+        cout << "Árvore vázia não é possível realizar operação..." << endl;
+        break;
+      }
+      arvore->printarArvore(arvore);
+      break;
     }
     default:
       break;
     }
   }
+  return EXIT_SUCCESS;
 }
