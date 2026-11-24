@@ -38,6 +38,5 @@ class AvlTree
 };
 
 int receberEntrada(const std::string& mensagem);
-
-
+bool verificarNull(const std::unique_ptr<AvlTree>& no);
 #endif 
